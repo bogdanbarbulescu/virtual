@@ -9,12 +9,34 @@ let distortionNode;
 
 // Store current settings
 let currentSettings = {
-    waveform: 'sine',
+    osc1: {
+        waveform: 'sine',
+        detune: 0,
+        gain: 0.5
+    },
+    osc2: {
+        waveform: 'square',
+        detune: 0,
+        gain: 0.5
+    },
+    envelope: {
+        attack: 0.01,
+        decay: 0.1,
+        sustain: 0.7,
+        release: 0.1
+    },
     volume: 0.5,
     reverb: 0,
     delay: 0,
     distortion: 0
 };
+
+// Sequencer variables
+let sequenceData = {};
+let sequencerInterval = null;
+let currentStep = 0;
+let isPlaying = false;
+let tempo = 120; // BPM
 
 // Presets
 const presets = {
@@ -91,9 +113,26 @@ const keyboardMap = {
 };
 
 // DOM Elements
-let waveformSelect;
+let waveform1Select;
+let waveform2Select;
+let detune1Slider;
+let detune1Value;
+let detune2Slider;
+let detune2Value;
+let osc1GainSlider;
+let osc1GainValue;
+let osc2GainSlider;
+let osc2GainValue;
 let volumeSlider;
 let volumeValue;
+let attackSlider;
+let attackValue;
+let decaySlider;
+let decayValue;
+let sustainSlider;
+let sustainValue;
+let releaseSlider;
+let releaseValue;
 let reverbSlider;
 let reverbValue;
 let delaySlider;
@@ -106,6 +145,13 @@ let savePresetButton;
 let keys;
 let visualizer;
 let visualizerContext;
+let oscTabs;
+let oscPanels;
+let playSequenceButton;
+let stopSequenceButton;
+let tempoSlider;
+let tempoValue;
+let sequenceSteps;
 
 // Initialize the application when the window loads
 window.addEventListener('load', init);
@@ -177,7 +223,29 @@ function setupEffectsNodes() {
 }
 
 function setupDOMElements() {
-    waveformSelect = document.getElementById('waveform');
+    // Oscillator controls
+    waveform1Select = document.getElementById('waveform1');
+    waveform2Select = document.getElementById('waveform2');
+    detune1Slider = document.getElementById('detune1');
+    detune1Value = document.getElementById('detune1-value');
+    detune2Slider = document.getElementById('detune2');
+    detune2Value = document.getElementById('detune2-value');
+    osc1GainSlider = document.getElementById('osc1-gain');
+    osc1GainValue = document.getElementById('osc1-gain-value');
+    osc2GainSlider = document.getElementById('osc2-gain');
+    osc2GainValue = document.getElementById('osc2-gain-value');
+    
+    // Envelope controls
+    attackSlider = document.getElementById('attack');
+    attackValue = document.getElementById('attack-value');
+    decaySlider = document.getElementById('decay');
+    decayValue = document.getElementById('decay-value');
+    sustainSlider = document.getElementById('sustain');
+    sustainValue = document.getElementById('sustain-value');
+    releaseSlider = document.getElementById('release');
+    releaseValue = document.getElementById('release-value');
+    
+    // Effects controls
     volumeSlider = document.getElementById('volume');
     volumeValue = document.getElementById('volume-value');
     reverbSlider = document.getElementById('reverb');
@@ -186,17 +254,53 @@ function setupDOMElements() {
     delayValue = document.getElementById('delay-value');
     distortionSlider = document.getElementById('distortion');
     distortionValue = document.getElementById('distortion-value');
+    
+    // Preset controls
     presetSelect = document.getElementById('preset-select');
     loadPresetButton = document.getElementById('load-preset');
     savePresetButton = document.getElementById('save-preset');
+    
+    // Keyboard
     keys = document.querySelectorAll('.key');
+    
+    // Visualizer
     visualizer = document.getElementById('visualizer');
     visualizerContext = visualizer.getContext('2d');
+    
+    // Oscillator tabs
+    oscTabs = document.querySelectorAll('.osc-tab');
+    oscPanels = document.querySelectorAll('.oscillator-panel');
+    
+    // Sequencer controls
+    playSequenceButton = document.getElementById('play-sequence');
+    stopSequenceButton = document.getElementById('stop-sequence');
+    tempoSlider = document.getElementById('tempo');
+    tempoValue = document.getElementById('tempo-value');
+    sequenceSteps = document.querySelectorAll('.step');
+    
+    // Initialize sequencer data
+    document.querySelectorAll('.sequence-row').forEach(row => {
+        const note = row.dataset.note;
+        sequenceData[note] = Array(8).fill(false);
+    });
 }
 
 function setupEventListeners() {
-    // Control listeners
-    waveformSelect.addEventListener('change', updateWaveform);
+    // Oscillator controls listeners
+    waveform1Select.addEventListener('change', updateOscillator1);
+    waveform2Select.addEventListener('change', updateOscillator2);
+    detune1Slider.addEventListener('input', updateOscillator1);
+    detune2Slider.addEventListener('input', updateOscillator2);
+    osc1GainSlider.addEventListener('input', updateOscillator1);
+    osc2GainSlider.addEventListener('input', updateOscillator2);
+    
+    // Envelope controls listeners
+    attackSlider.addEventListener('input', updateEnvelope);
+    decaySlider.addEventListener('input', updateEnvelope);
+    sustainSlider.addEventListener('input', updateEnvelope);
+    releaseSlider.addEventListener('input', updateEnvelope);
+    
+    // Effect controls listeners
     volumeSlider.addEventListener('input', updateVolume);
     reverbSlider.addEventListener('input', updateReverb);
     delaySlider.addEventListener('input', updateDelay);
@@ -205,6 +309,17 @@ function setupEventListeners() {
     // Preset listeners
     loadPresetButton.addEventListener('click', loadPreset);
     savePresetButton.addEventListener('click', savePreset);
+    
+    // Oscillator tabs listeners
+    oscTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            oscTabs.forEach(t => t.classList.remove('active'));
+            oscPanels.forEach(p => p.classList.remove('active'));
+            
+            tab.classList.add('active');
+            document.getElementById(`${tab.dataset.osc}-panel`).classList.add('active');
+        });
+    });
     
     // Keyboard listeners
     keys.forEach(key => {
@@ -216,6 +331,24 @@ function setupEventListeners() {
     // Computer keyboard controls
     document.addEventListener('keydown', handleKeyDown);
     document.addEventListener('keyup', handleKeyUp);
+    
+    // Sequencer controls
+    playSequenceButton.addEventListener('click', startSequencer);
+    stopSequenceButton.addEventListener('click', stopSequencer);
+    tempoSlider.addEventListener('input', updateTempo);
+    
+    // Sequencer steps listeners
+    sequenceSteps.forEach(step => {
+        step.addEventListener('click', () => {
+            const row = step.closest('.sequence-row');
+            const note = row.dataset.note;
+            const stepIndex = parseInt(step.dataset.step);
+            
+            // Toggle step
+            sequenceData[note][stepIndex] = !sequenceData[note][stepIndex];
+            step.classList.toggle('active', sequenceData[note][stepIndex]);
+        });
+    });
     
     // Window resize for visualizer
     window.addEventListener('resize', resizeVisualizer);
