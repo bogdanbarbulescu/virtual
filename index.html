@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Synthesizer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Virtual Synthesizer</h1>
+        </header>
+        
+        <div class="synth-controls">
+            <div class="control-section">
+                <h2>Oscillator</h2>
+                <div class="control-group">
+                    <label for="waveform">Waveform:</label>
+                    <select id="waveform">
+                        <option value="sine">Sine</option>
+                        <option value="square">Square</option>
+                        <option value="sawtooth">Sawtooth</option>
+                        <option value="triangle">Triangle</option>
+                    </select>
+                </div>
+                
+                <div class="control-group">
+                    <label for="volume">Volume:</label>
+                    <input type="range" id="volume" min="0" max="1" step="0.01" value="0.5">
+                    <span id="volume-value">0.5</span>
+                </div>
+            </div>
+            
+            <div class="control-section">
+                <h2>Effects</h2>
+                <div class="control-group">
+                    <label for="reverb">Reverb:</label>
+                    <input type="range" id="reverb" min="0" max="1" step="0.01" value="0">
+                    <span id="reverb-value">0</span>
+                </div>
+                
+                <div class="control-group">
+                    <label for="delay">Delay:</label>
+                    <input type="range" id="delay" min="0" max="1" step="0.01" value="0">
+                    <span id="delay-value">0</span>
+                </div>
+                
+                <div class="control-group">
+                    <label for="distortion">Distortion:</label>
+                    <input type="range" id="distortion" min="0" max="1" step="0.01" value="0">
+                    <span id="distortion-value">0</span>
+                </div>
+            </div>
+            
+            <div class="preset-section">
+                <h2>Presets</h2>
+                <div class="preset-controls">
+                    <select id="preset-select">
+                        <option value="default">Default</option>
+                        <option value="bass">Bass</option>
+                        <option value="lead">Lead</option>
+                        <option value="pad">Pad</option>
+                    </select>
+                    <button id="load-preset">Load</button>
+                    <button id="save-preset">Save Current</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="visualizer-container">
+            <canvas id="visualizer"></canvas>
+        </div>
+        
+        <div class="keyboard-container">
+            <div class="piano-keyboard">
+                <div class="key white" data-note="C4"><span>A</span></div>
+                <div class="key black" data-note="C#4"><span>W</span></div>
+                <div class="key white" data-note="D4"><span>S</span></div>
+                <div class="key black" data-note="D#4"><span>E</span></div>
+                <div class="key white" data-note="E4"><span>D</span></div>
+                <div class="key white" data-note="F4"><span>F</span></div>
+                <div class="key black" data-note="F#4"><span>T</span></div>
+                <div class="key white" data-note="G4"><span>G</span></div>
+                <div class="key black" data-note="G#4"><span>Y</span></div>
+                <div class="key white" data-note="A4"><span>H</span></div>
+                <div class="key black" data-note="A#4"><span>U</span></div>
+                <div class="key white" data-note="B4"><span>J</span></div>
+                <div class="key white" data-note="C5"><span>K</span></div>
+                <div class="key black" data-note="C#5"><span>O</span></div>
+                <div class="key white" data-note="D5"><span>L</span></div>
+                <div class="key black" data-note="D#5"><span>P</span></div>
+                <div class="key white" data-note="E5"><span>;</span></div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>Created with Web Audio API | GitHub Pages Project</p>
+    </footer>
+    
+    <script src="script.js"></script>
+</body>
+</html>
