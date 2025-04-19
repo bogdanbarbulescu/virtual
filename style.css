@@ -52,6 +52,34 @@ h1 {
     min-width: 250px;
 }
 
+.oscillator-tabs {
+    display: flex;
+    margin-bottom: 15px;
+    gap: 10px;
+}
+
+.osc-tab {
+    padding: 6px 12px;
+    background-color: #45a29e;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.osc-tab.active {
+    background-color: #66fcf1;
+    color: #0b0c10;
+}
+
+.oscillator-panel {
+    display: none;
+}
+
+.oscillator-panel.active {
+    display: block;
+}
+
 .control-section h2, .preset-section h2 {
     font-size: 1.3rem;
     margin-bottom: 15px;
@@ -133,12 +161,93 @@ button:hover {
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    margin-bottom: 20px;
 }
 
 #visualizer {
     width: 100%;
     height: 100%;
     background-color: #0b0c10;
+}
+
+.sequencer-container {
+    width: 100%;
+    background-color: #1f2833;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    margin-bottom: 20px;
+}
+
+.sequencer-container h2 {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    color: #66fcf1;
+    border-bottom: 1px solid #45a29e;
+    padding-bottom: 5px;
+}
+
+.sequencer-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.sequencer-controls button {
+    padding: 8px 16px;
+    background-color: #66fcf1;
+    color: #0b0c10;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#stop-sequence {
+    background-color: #fc6666;
+    color: #fff;
+}
+
+.sequence-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sequence-row {
+    display: flex;
+    align-items: center;
+}
+
+.note-label {
+    width: 40px;
+    text-align: center;
+    font-weight: bold;
+    color: #66fcf1;
+}
+
+.step-buttons {
+    display: flex;
+    flex: 1;
+    gap: 8px;
+}
+
+.step {
+    flex: 1;
+    height: 30px;
+    background-color: #2c3e50;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.step.active {
+    background-color: #66fcf1;
+}
+
+.step.current {
+    border: 2px solid #fff;
 }
 
 .keyboard-container {
