@@ -11,7 +11,7 @@
         <header>
             <h1>Virtual Synthesizer</h1>
         </header>
-        
+
         <div class="synth-controls">
             <div class="control-section">
                 <h2>Oscillators</h2>
@@ -19,7 +19,7 @@
                     <button class="osc-tab active" data-osc="osc1">Osc 1</button>
                     <button class="osc-tab" data-osc="osc2">Osc 2</button>
                 </div>
-                
+
                 <div class="oscillator-panel active" id="osc1-panel">
                     <div class="control-group">
                         <label for="waveform1">Waveform:</label>
@@ -30,20 +30,20 @@
                             <option value="triangle">Triangle</option>
                         </select>
                     </div>
-                    
+
                     <div class="control-group">
                         <label for="detune1">Detune:</label>
                         <input type="range" id="detune1" min="-50" max="50" step="1" value="0">
                         <span id="detune1-value">0</span>
                     </div>
-                    
+
                     <div class="control-group">
                         <label for="osc1-gain">Level:</label>
                         <input type="range" id="osc1-gain" min="0" max="1" step="0.01" value="0.5">
                         <span id="osc1-gain-value">0.5</span>
                     </div>
                 </div>
-                
+
                 <div class="oscillator-panel" id="osc2-panel">
                     <div class="control-group">
                         <label for="waveform2">Waveform:</label>
@@ -54,27 +54,27 @@
                             <option value="triangle">Triangle</option>
                         </select>
                     </div>
-                    
+
                     <div class="control-group">
                         <label for="detune2">Detune:</label>
                         <input type="range" id="detune2" min="-50" max="50" step="1" value="0">
                         <span id="detune2-value">0</span>
                     </div>
-                    
+
                     <div class="control-group">
                         <label for="osc2-gain">Level:</label>
                         <input type="range" id="osc2-gain" min="0" max="1" step="0.01" value="0.5">
                         <span id="osc2-gain-value">0.5</span>
                     </div>
                 </div>
-                
+
                 <div class="control-group">
                     <label for="volume">Master Volume:</label>
                     <input type="range" id="volume" min="0" max="1" step="0.01" value="0.5">
                     <span id="volume-value">0.5</span>
                 </div>
             </div>
-            
+
             <div class="control-section">
                 <h2>Envelope</h2>
                 <div class="control-group">
@@ -82,26 +82,26 @@
                     <input type="range" id="attack" min="0.01" max="2" step="0.01" value="0.01">
                     <span id="attack-value">0.01</span>
                 </div>
-                
+
                 <div class="control-group">
                     <label for="decay">Decay:</label>
                     <input type="range" id="decay" min="0.01" max="2" step="0.01" value="0.1">
                     <span id="decay-value">0.1</span>
                 </div>
-                
+
                 <div class="control-group">
                     <label for="sustain">Sustain:</label>
                     <input type="range" id="sustain" min="0" max="1" step="0.01" value="0.7">
                     <span id="sustain-value">0.7</span>
                 </div>
-                
+
                 <div class="control-group">
                     <label for="release">Release:</label>
                     <input type="range" id="release" min="0.01" max="3" step="0.01" value="0.1">
                     <span id="release-value">0.1</span>
                 </div>
             </div>
-            
+
             <div class="control-section">
                 <h2>Effects</h2>
                 <div class="control-group">
@@ -109,20 +109,20 @@
                     <input type="range" id="reverb" min="0" max="1" step="0.01" value="0">
                     <span id="reverb-value">0</span>
                 </div>
-                
+
                 <div class="control-group">
                     <label for="delay">Delay:</label>
                     <input type="range" id="delay" min="0" max="1" step="0.01" value="0">
                     <span id="delay-value">0</span>
                 </div>
-                
+
                 <div class="control-group">
                     <label for="distortion">Distortion:</label>
                     <input type="range" id="distortion" min="0" max="1" step="0.01" value="0">
                     <span id="distortion-value">0</span>
                 </div>
             </div>
-            
+
             <div class="preset-section">
                 <h2>Presets</h2>
                 <div class="preset-controls">
@@ -137,11 +137,11 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="visualizer-container">
             <canvas id="visualizer"></canvas>
         </div>
-        
+
         <div class="sequencer-container">
             <h2>Step Sequencer</h2>
             <div class="sequencer-controls">
@@ -154,6 +154,7 @@
                 </div>
             </div>
             <div class="sequence-grid">
+                <!-- Rows generated by JS or hardcoded -->
                 <div class="sequence-row" data-note="C5">
                     <div class="note-label">C5</div>
                     <div class="step-buttons">
@@ -221,7 +222,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="keyboard-container">
             <div class="piano-keyboard">
                 <div class="key white" data-note="C4"><span>A</span></div>
@@ -244,11 +245,11 @@
             </div>
         </div>
     </div>
-    
+
     <footer>
         <p>Created with Web Audio API | GitHub Pages Project</p>
     </footer>
-    
+
     <script src="script.js"></script>
 </body>
 </html>
